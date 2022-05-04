@@ -1,0 +1,103 @@
+<!-- page grid layout -->
+<style>
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #customers tr:hover {background-color: #ddd;}
+    
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #8592ff;
+      color: white;
+
+      /* button style */
+    
+    }
+</style> 
+  <!-- button css -->
+<style>
+    .button {
+    background-color: #d16262;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;   
+    }
+    .button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+</style>
+{% extends "mainlayout.html" %}
+{% block content%}
+
+<table id="customers">
+    <tr>
+      <th>ID</th>
+      <th>Customer Name</th>
+      <th>City</th>
+      <th>Age</th>
+      <th></th>
+    </tr>
+    {% for customer in values %}
+    <tr>
+      <td>{{customer.id}}</td>
+      <td>{{customer.name}}</td>
+      <td>{{customer.city}}</td>
+      <td>{{customer.age}}</td>
+      <td>
+        <form action="/del/customers/{{customer.id}}" class="form-container" method="post">
+        <button class="button" style="background-color: #f44336; border-radius: 8px;"} type="submit">Delete!!</a></td></tr>
+        </form>
+    {% endfor %}
+</table>
+
+<!-- popup button -->
+<div>
+    <button class="open-button" onclick="openForm()">Add New Customer</button>
+
+    <div class="form-popup" id="myForm">
+    <form action="/add/customers" class="form-container" method="post">
+
+        <label for="name"><b>First Name</b></label>
+        <input type="text" placeholder="Enter first name" name="Name" required>
+
+        <label for="name"><b>City</b></label>
+        <input type="text" placeholder="City" name="City" required>
+
+        <label for="name"><b>Age</b></label>
+        <input type="text" placeholder="Age" name="Age" required>
+
+        <button type="submit" class="btn">Sign Up</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+    </div>
+        <script>
+            function openForm() {
+            document.getElementById("myForm").style.display = "block";
+            }
+            
+            function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+            }
+          </script>
+    </div>
+</div>
+
+{%  endblock %}

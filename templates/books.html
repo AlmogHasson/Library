@@ -1,0 +1,78 @@
+{% extends "mainlayout.html" %}
+{% block content%}
+<div class="row ">
+    <div>
+        
+    </div>    
+{% for book in values %}
+<div class="col-xs-12 col-sm-3">
+    <section class="wrapper">
+        <div class="container-fostrap">
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="card">
+                            <a class="img-card" href="#">
+                            <img src="https://picsum.photos/200/300" />
+                        </a>
+                            <div class="card-content">
+                                <h4 class="card-title">Name: {{book.name}}</h4>                                
+                                <p>Author: {{book.author}}</p>
+                                <p>Published: {{book.year_published}}</p>   
+                            </div>
+                            <div class="card-read-more">
+                                <!--add link to choose a CUSTOMER  -->
+                                <a href="#" class="btn btn-link btn-block">
+                                    Loan
+                                </a>
+                                <form action="/del/books/{{book.id}}" class="form-container" method="post" style="margin-left: 1cm;">
+                                    <button class="button" style="background-color: #f44336; border-radius: 8px;"}  type="submit">Delete!!</button>
+                                </a>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endfor %}
+</div>
+
+<!-- popup button -->
+<div>
+    <button class="open-button" onclick="openForm()">Add New Book</button>
+
+    <div class="form-popup" id="myForm2">
+    <form action="/add/books" class="form-container" method="post">
+
+        <label for="name"><b>Book Name</b></label>
+        <input type="text" placeholder="Enter Book name" name="BName" required>
+
+        <label for="name"><b>Author</b></label>
+        <input type="text" placeholder="Author" name="Author" required>
+
+        <label for="name"><b>Year Published</b></label>
+        <input type="text" placeholder="Year Published" name="YP" required>
+
+        <label for="type"><b>Book Type</b></label>
+        <input type="number 1-3" placeholder="Enter Book Type" name="Btype" required>
+
+        <button type="submit" class="btn">Submit</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+    </div>
+        <script>
+            function openForm() {
+            document.getElementById("myForm2").style.display = "block";
+            }
+            
+            function closeForm() {
+            document.getElementById("myForm2").style.display = "none";
+            }
+        </script>
+    </div>
+{% endblock %}
+

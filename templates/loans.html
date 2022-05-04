@@ -1,0 +1,28 @@
+{% extends "mainlayout.html" %} {% block content %} {% for loan in values %}
+<section class="wrapper">
+  <div class="container-fostrap">
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-4">
+            <div class="card">
+              <a class="img-card" href="#">
+                <img src="/static/BookBG.img" />
+              </a>
+              <div class="card-content">
+                <h4 class="card-title">book:{{loan.bookID}}</h4>
+                <p>customer: {{loan.customerID}}</p>
+                <p>loan date: {{loan.loan_date}}</p>
+                <p>return by: {{loan.return_date}}</p>
+              </div>
+              <div class="card-read-more" method="GET">
+                <a href="#" class="btn btn-link btn-block"> Loan </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %} {% endblock %}
