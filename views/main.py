@@ -1,4 +1,5 @@
-from flask import render_template,request
+from os import name
+from flask import render_template,request, session
 from flask import Blueprint
 from ..modules import CustomersDB,LoansDB,BooksDB
 from ..flask_app import db
@@ -14,6 +15,17 @@ def home():
 
 def customers():
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
+
+@mainbp.route("/search/customers", methods=['POST'])
+def search_customer():
+    cust_name=request.form.get("customer")
+    c=CustomersDB.Customers.query.filter_by(name=cust_name)
+
+    if list(c):
+         return render_template('customers.html',values=c)
+    else: return('not found')
+
+   
 
 @mainbp.route("/add/customers", methods=['POST','GET'])    
 def add_customer():
@@ -34,7 +46,7 @@ def del_customer(id_cus):
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
 
 
-@mainbp.route("/books" , methods=['POST','GET'])
+@mainbp.route("/books/", methods=['POST','GET'])
 def books():
     return render_template('books.html',values=BooksDB.Books.query.all())
 
@@ -52,12 +64,22 @@ def add_book():
 
 @mainbp.route("/del/books/<int:id_book>", methods=['POST'])    
 def del_book(id_book):
-
+    
     BooksDB.Books.query.filter_by(id=id_book).delete()
     db.session.commit() 
     return render_template('books.html',values=BooksDB.Books.query.all())
 
+@mainbp.route("/search/books", methods=['POST'])
+def search_book():
 
+        book_name=request.form.get("Book")
+        b=BooksDB.Books.query.filter_by(name=book_name)
+        
+        if list(b):
+            return render_template('books.html',values=b)
+
+        else: return('not found')
+    
 
 @mainbp.route("/loans")
 def loans():
