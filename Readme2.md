@@ -31,7 +31,7 @@ The Projects subject its managing a book library
 4. # Build a client app that uses the DAL. add a menu:
     [v] - Add a new customer
     [v] - Add a new book
-    [x] - Loan a book
+    [v] - Loan a book
     [x] - Return a book
     [v] - Display all books
     [v] - Display all customers

@@ -1,28 +1,32 @@
-{% extends "mainlayout.html" %} {% block content %} {% for loan in values %}
-<section class="wrapper">
-  <div class="container-fostrap">
-    <div class="content">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-sm-4">
-            <div class="card">
-              <a class="img-card" href="#">
-                <img src="/static/BookBG.img" />
-              </a>
-              <div class="card-content">
-                <h4 class="card-title">book:{{loan.bookID}}</h4>
-                <p>customer: {{loan.customerID}}</p>
-                <p>loan date: {{loan.loan_date}}</p>
-                <p>return by: {{loan.return_date}}</p>
-              </div>
-              <div class="card-read-more" method="GET">
-                <a href="#" class="btn btn-link btn-block"> Loan </a>
+{% extends "mainlayout.html" %} {% block content%}
+<div class="row">
+  {% for loan in values %}
+  <div class="col-xs-12 col-sm-3">
+    <section class="wrapper">
+      <div class="container-fostrap">
+        <div class="content">
+          <div class="container">
+            <div class="row">
+              <div class="card">
+                <img src="https://picsum.photos/400/250" />
+                <div class="card-content">
+                  <h4 class="card-title">Book ID:{{loan.bookID}}</h4>
+                  <p>Customer ID: {{loan.customerID}}</p>
+                  <p>Loan date: {{loan.loan_date.date()}}</p>
+                  <p>Return by: {{loan.return_date.date()}}</p>
+                </div>
+                <div class="card-read-more">
+                  <form action="/delete_loan/{{loan.loan_id}}" method="post">
+                    <button class="button" style="background-color: #f44336; border-radius: 8px;"} type="submit">Return Book</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-</section>
-{% endfor %} {% endblock %}
+  {% endfor %}
+</div>
+{% endblock %}

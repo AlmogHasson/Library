@@ -5,7 +5,7 @@ from ..flask_app import db
 
 class Customers(db.Model):
     __tablename__= 'customers'
-    id= db.Column(db.Integer, primary_key=True)
+    id= db.Column(db.Integer, primary_key=True,autoincrement=True)
     name= db.Column(db.String(30),nullable= False)
     city= db.Column(db.String(30),nullable= False)
     age= db.Column(db.Integer)

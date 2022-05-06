@@ -1,9 +1,6 @@
 {% extends "mainlayout.html" %}
 {% block content%}
-<div class="row ">
-    <div>
-        
-    </div>    
+<div class="row ">    
 {% for book in values %}
 <div class="col-xs-12 col-sm-3">
     <section class="wrapper">
@@ -12,25 +9,21 @@
                 <div class="container">
                     <div class="row">
                         <div class="card">
-                            <a class="img-card" href="#">
-                            <img src="https://picsum.photos/200/300" />
-                        </a>
+                            <img src="https://picsum.photos/400/200" />
                             <div class="card-content">
-                                <a href="/search/book/{{book.name}}">
-                                <h4 class="card-title">Name: {{book.name}}</h4></a>                             
+                                <h4 class="card-title">Name: {{book.name}}</h4>                            
                                 <p>Author: {{book.author}}</p>
-                                <p>Published: {{book.year_published}}</p>   
+                                <p>Published: {{book.year_published}}</p>
+                                <p>Book Type: {{book.book_type}}</p>    
                             </div>
                             <div class="card-read-more">
-                                <!--add link to choose a CUSTOMER  -->
-                                <a href="#" class="btn btn-link btn-block">
+                                <a href="/create_loan/{{book.id}}" class="btn btn-link btn-block">
                                     Loan
                                 </a>
                                 <form action="/del/books/{{book.id}}" class="form-container" method="post" style="margin-left: 1cm;">
-                                    <button class="button" style="background-color: #f44336; border-radius: 8px;"}  type="submit">Delete!!</button>
+                                    <button class="button" style="background-color: #f44336; border-radius: 8px;"}  type="submit">Delete</button>
                                 </a>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
@@ -58,7 +51,7 @@
         <label for="name"><b>Year Published</b></label>
         <input type="text" placeholder="Year Published" name="YP" required>
 
-        <label for="type"><b>Book Type</b></label>
+        <label for="type"><b>Book Type (1-3)</b></label>
         <input type="number 1-3" placeholder="Enter Book Type" name="Btype" required>
 
         <button type="submit" class="btn">Submit</button>

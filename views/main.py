@@ -1,14 +1,17 @@
-from os import name
-from flask import render_template,request, session
+import datetime
+from webbrowser import get
+from flask import render_template,request
 from flask import Blueprint
 from ..modules import CustomersDB,LoansDB,BooksDB
 from ..flask_app import db
+
+db.create_all()
 
 mainbp=Blueprint('main',__name__)
 
 @mainbp.route("/")
 def home():
-    return render_template('/home.html')
+    return render_template('books.html',values=BooksDB.Books.query.all())
 
 
 @mainbp.route("/customers", methods=['POST','GET'])
@@ -71,20 +74,51 @@ def del_book(id_book):
 
 @mainbp.route("/search/books", methods=['POST'])
 def search_book():
-
-        book_name=request.form.get("Book")
-        b=BooksDB.Books.query.filter_by(name=book_name)
-        
-        if list(b):
-            return render_template('books.html',values=b)
-
-        else: return('not found')
+    book_name=request.form.get("Book")
+    b=BooksDB.Books.query.filter_by(name=book_name)
     
+    if list(b):
+        return render_template('books.html',values=b)
+        
 
+    else: return('not found')
+
+#shows all loans
 @mainbp.route("/loans")
-def loans():
+def loans():  
     return render_template('loans.html', values=LoansDB.Loans.query.all())
 
-@mainbp.route("/login", methods=["POST","GET"])
-def login():
-    pass
+#choose a book to loan
+@mainbp.route("/create_loan/<int:book>")
+def book_2loan(book):
+
+    return render_template('cstmrsLoan.html',values=CustomersDB.Customers.query.all(),book_id_2loan=book)
+    
+#choose the customer who loaned the book
+@mainbp.route("/create_loan/<int:book_id>/<int:customer_id>")
+def cust_loan(book_id,customer_id):
+
+    loan_date=datetime.date.today()
+    book=BooksDB.Books.query.get(book_id)
+    k=book.book_type
+    return_date= loan_date + datetime.timedelta(days=10)*k
+
+    new_loan=LoansDB.Loans(customer_id,book_id,loan_date,return_date)
+    db.session.add(new_loan)
+    db.session.commit()
+
+    return render_template('loans.html',values=LoansDB.Loans.query.all(),book_id_2loan=book_id,customer=customer_id)
+
+@mainbp.route("/delete_loan/<int:loan_id>" ,methods=['POST'])
+def return_book(loan_id):
+    LoansDB.Loans.query.filter_by(loan_id=loan_id).delete()
+    db.session.commit()
+    return render_template('loans.html',values=LoansDB.Loans.query.all())
+    
+
+#TODO:replace the "doesnt exist" with a flash massage inside the template
+#TODO:create a display for the late loans
+#TODO:create return book func
+
+
+
