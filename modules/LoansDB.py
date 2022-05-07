@@ -1,5 +1,7 @@
 import datetime
-from sqlalchemy import ForeignKey
+from email.policy import default
+from xmlrpc.client import boolean
+from sqlalchemy import Boolean, ForeignKey
 from .BooksDB import Books
 from ..flask_app import db
 from .CustomersDB import Customers

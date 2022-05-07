@@ -47,6 +47,16 @@
 {% extends "mainlayout.html" %}
 {% block content%}
 
+{% with messages = get_flashed_messages()%}
+  {% if messages%}
+    {% for msg in messages %}
+      <div class="alert alert-danger" role="alert">
+        {{msg}}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 <table id="customers">
     <tr>
       <th>ID</th>
@@ -86,7 +96,7 @@
         <label for="name"><b>Age</b></label>
         <input type="text" placeholder="Age" name="Age" required>
 
-        <button type="submit" class="btn">Sign Up</button>
+        <button type="submit" class="btn">Submit</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
     </div>

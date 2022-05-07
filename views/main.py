@@ -1,6 +1,5 @@
 import datetime
-from webbrowser import get
-from flask import render_template,request
+from flask import render_template,request,flash
 from flask import Blueprint
 from ..modules import CustomersDB,LoansDB,BooksDB
 from ..flask_app import db
@@ -9,16 +8,20 @@ db.create_all()
 
 mainbp=Blueprint('main',__name__)
 
+#homepage(directly shows the books)
 @mainbp.route("/")
 def home():
     return render_template('books.html',values=BooksDB.Books.query.all())
 
 
+#customers page
 @mainbp.route("/customers", methods=['POST','GET'])
 
 def customers():
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
 
+
+#search customer
 @mainbp.route("/search/customers", methods=['POST'])
 def search_customer():
     cust_name=request.form.get("customer")
@@ -26,10 +29,12 @@ def search_customer():
 
     if list(c):
          return render_template('customers.html',values=c)
-    else: return('not found')
+    else: flash(f'{cust_name},could not be found, make sure youre using uppercase letters where needed.' ,'info')
+    return render_template('books.html',values=BooksDB.Books.query.all())
+
 
    
-
+#Add customer
 @mainbp.route("/add/customers", methods=['POST','GET'])    
 def add_customer():
     username= request.form.get("Name")
@@ -41,6 +46,7 @@ def add_customer():
     db.session.commit()
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
 
+#Delete customer
 @mainbp.route("/del/customers/<int:id_cus>", methods=['POST'])  
 def del_customer(id_cus):
 
@@ -48,10 +54,6 @@ def del_customer(id_cus):
     db.session.commit() 
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
 
-
-@mainbp.route("/books/", methods=['POST','GET'])
-def books():
-    return render_template('books.html',values=BooksDB.Books.query.all())
 
 @mainbp.route("/add/books", methods=['POST','GET'])    
 def add_book():
@@ -79,9 +81,9 @@ def search_book():
     
     if list(b):
         return render_template('books.html',values=b)
-        
-
-    else: return('not found')
+    else:
+        flash(f'{book_name},could not be found, make sure youre using uppercase letters where needed.' ,'info')
+        return render_template('books.html',values=BooksDB.Books.query.all())
 
 #shows all loans
 @mainbp.route("/loans")
@@ -109,16 +111,39 @@ def cust_loan(book_id,customer_id):
 
     return render_template('loans.html',values=LoansDB.Loans.query.all(),book_id_2loan=book_id,customer=customer_id)
 
+
+#return book
 @mainbp.route("/delete_loan/<int:loan_id>" ,methods=['POST'])
 def return_book(loan_id):
     LoansDB.Loans.query.filter_by(loan_id=loan_id).delete()
     db.session.commit()
     return render_template('loans.html',values=LoansDB.Loans.query.all())
+
+#late loans
+# @mainbp.route("/late_loans")
+# def late_loans():
+#     book_type=BooksDB.Books.query(BooksDB.Books).filter(BooksDB.Books.book_type)
+#     today=datetime.date.today()
+#     q=db.session.query(LoansDB.Loans).filter(LoansDB.Loans.return_date).all()
+#     for x in q:
+#         if book_type==1 and q.return_date - q.loan_date <=datetime.timedelta(days=10):
+
+
+        
+            
+#         else:
+#             return('not late')
+#     return render_template('late.html',values=LoansDB.Loans.query.all,x=x)
+            
+            
+    
+#a single page that shows all late loans
+#grab the books return date from the Loans database
+#compare today to the loan date
+#if today>loan day= display as late loan
+
+
     
 
 #TODO:replace the "doesnt exist" with a flash massage inside the template
 #TODO:create a display for the late loans
-#TODO:create return book func
-
-
-

@@ -1,5 +1,16 @@
 {% extends "mainlayout.html" %}
 {% block content%}
+
+{% with messages = get_flashed_messages()%}
+  {% if messages%}
+    {% for msg in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{msg}}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 <div class="row ">    
 {% for book in values %}
 <div class="col-xs-12 col-sm-3">
@@ -68,5 +79,9 @@
             }
         </script>
     </div>
+
+<script>
+    $('.alert').alert()
+</script>
 {% endblock %}
 
