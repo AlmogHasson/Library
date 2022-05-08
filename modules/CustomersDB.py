@@ -1,7 +1,6 @@
 from ..flask_app import db
 
-
-#Create a DB model(class)
+#Creating a DB model
 
 class Customers(db.Model):
     __tablename__= 'customers'
@@ -15,13 +14,4 @@ class Customers(db.Model):
         self.city = city
         self.age = age
 
-    def delete_customer():
-        Customers.query.filter_by(id='').delete()
-        db.session.commit() 
-
-
-#Adding customer to db
-c=Customers('almog','netanya',22)
-db.session.add(c)
-#db.session.commit()
 

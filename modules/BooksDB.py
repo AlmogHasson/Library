@@ -14,11 +14,3 @@ class Books(db.Model):
         self.author = author
         self.year_published = year_published
         self.book_type=book_type
-        
-    @staticmethod
-    def delete_book():
-        id=Books.id
-        Books.query.filter_by(id).delete()
-        db.session.commit() 
-
-

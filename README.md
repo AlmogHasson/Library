@@ -1,4 +1,7 @@
-Hello!, this project is about managing a library,
+Hello!, my name is Almog Hasson, i am a student at John Bryce's
+full stack program, and this is our very first project.
+
+this project is about managing a library,
 using Flask,Python and SQLalchemy with SQLight3 as our database.
 
 **Features:**
@@ -9,12 +12,12 @@ using Flask,Python and SQLalchemy with SQLight3 as our database.
 -Adding a customer to the customers list
 -Adding a book to the library
 -Making a loan by choosing a book and a customer
--Returing a book
 -Deleting a customer
 -Deleting a book
 -Searching for a customer by name
 -Searching for a book by name
 -Displaying all late loans
+-Returning late loans
 
 **First, the required installations:**
 

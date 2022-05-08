@@ -47,6 +47,8 @@
 {% extends "mainlayout.html" %}
 {% block content%}
 
+
+<!-- flash message 'not found' -->
 {% with messages = get_flashed_messages()%}
   {% if messages%}
     {% for msg in messages %}

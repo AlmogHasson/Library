@@ -55,6 +55,7 @@ def del_customer(id_cus):
     return render_template('customers.html',values=CustomersDB.Customers.query.all())
 
 
+#Add book
 @mainbp.route("/add/books", methods=['POST','GET'])    
 def add_book():
     book_name= request.form.get("BName")
@@ -67,6 +68,7 @@ def add_book():
     db.session.commit() 
     return render_template('books.html',values=BooksDB.Books.query.all())
 
+#Delete Book
 @mainbp.route("/del/books/<int:id_book>", methods=['POST'])    
 def del_book(id_book):
     
@@ -74,6 +76,7 @@ def del_book(id_book):
     db.session.commit() 
     return render_template('books.html',values=BooksDB.Books.query.all())
 
+#Search Books
 @mainbp.route("/search/books", methods=['POST'])
 def search_book():
     book_name=request.form.get("Book")
@@ -85,22 +88,22 @@ def search_book():
         flash(f'{book_name},could not be found, make sure youre using uppercase letters where needed.' ,'info')
         return render_template('books.html',values=BooksDB.Books.query.all())
 
-#shows all loans
+#Shows all loans
 @mainbp.route("/loans")
 def loans():  
     return render_template('loans.html', values=LoansDB.Loans.query.all())
 
-#choose a book to loan
+#Choose a book to loan
 @mainbp.route("/create_loan/<int:book>")
 def book_2loan(book):
 
     return render_template('cstmrsLoan.html',values=CustomersDB.Customers.query.all(),book_id_2loan=book)
     
-#choose the customer who loaned the book
+#Choose the customer who loaned the book
 @mainbp.route("/create_loan/<int:book_id>/<int:customer_id>")
 def cust_loan(book_id,customer_id):
 
-    loan_date=datetime.date.today()
+    loan_date=datetime.date.today()-datetime.timedelta(days=42)
     book=BooksDB.Books.query.get(book_id)
     k=book.book_type
     return_date= loan_date + datetime.timedelta(days=10)*k
@@ -112,38 +115,27 @@ def cust_loan(book_id,customer_id):
     return render_template('loans.html',values=LoansDB.Loans.query.all(),book_id_2loan=book_id,customer=customer_id)
 
 
-#return book
+#Return book
 @mainbp.route("/delete_loan/<int:loan_id>" ,methods=['POST'])
 def return_book(loan_id):
     LoansDB.Loans.query.filter_by(loan_id=loan_id).delete()
     db.session.commit()
     return render_template('loans.html',values=LoansDB.Loans.query.all())
 
-#late loans
-# @mainbp.route("/late_loans")
-# def late_loans():
-#     book_type=BooksDB.Books.query(BooksDB.Books).filter(BooksDB.Books.book_type)
-#     today=datetime.date.today()
-#     q=db.session.query(LoansDB.Loans).filter(LoansDB.Loans.return_date).all()
-#     for x in q:
-#         if book_type==1 and q.return_date - q.loan_date <=datetime.timedelta(days=10):
 
-
-        
-            
-#         else:
-#             return('not late')
-#     return render_template('late.html',values=LoansDB.Loans.query.all,x=x)
-            
-            
-    
-#a single page that shows all late loans
-#grab the books return date from the Loans database
-#compare today to the loan date
-#if today>loan day= display as late loan
-
+#Display late loans
+@mainbp.route("/late_loans")
+def late_loans():
+    loans=LoansDB.Loans.query.filter(LoansDB.Loans.return_date <= datetime.date.today())
+    print(list(loans))
+    return render_template('late.html',loans=loans)
 
     
 
-#TODO:replace the "doesnt exist" with a flash massage inside the template
-#TODO:create a display for the late loans
+#Delete/return late loans
+@mainbp.route("/del/late_loans/<int:loan_id>", methods=['POST'])    
+def del_loan(loan_id):
+    loans=LoansDB.Loans.query.filter(LoansDB.Loans.return_date <= datetime.date.today())
+    LoansDB.Loans.query.filter_by(loan_id=loan_id).delete()
+    db.session.commit() 
+    return render_template('late.html',loans=loans)
